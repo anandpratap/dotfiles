@@ -1,12 +1,13 @@
 .PHONY: all
-all: bin dotfiles etc ## Installs the bin and etc directory files and the dotfiles.
+all: bin dotfiles ## Installs the bin and etc directory files and the dotfiles.
 
 .PHONY: bin
 bin: ## Installs the bin directory files.
 	# add aliases for things in bin
+	mkdir -p $(HOME)/bin
 	for file in $(shell find $(CURDIR)/bin -type f -not -name "*-backlight" -not -name ".*.swp"); do \
 		f=$$(basename $$file); \
-		sudo ln -sf $$file /usr/local/bin/$$f; \
+		ln -sf $$file $(HOME)/bin/$$f; \
 	done
 
 .PHONY: dotfiles
@@ -19,7 +20,7 @@ dotfiles: ## Installs the dotfiles.
 	gpg --list-keys || true;
 	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
 	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
-	ln -fn $(CURDIR)/gitignore $(HOME)/.gitignore;
+	ln -sfn $(CURDIR)/gitignore $(HOME)/.gitignore;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
 	mkdir -p $(HOME)/.config;
 	ln -snf $(CURDIR)/.i3 $(HOME)/.config/sway;
@@ -28,7 +29,7 @@ dotfiles: ## Installs the dotfiles.
 	ln -snf $(CURDIR)/.bash_profile $(HOME)/.profile;
 	touch $(HOME)/.bash_local;
 	if [ -f /usr/local/bin/pinentry ]; then \
-		sudo ln -snf /usr/bin/pinentry /usr/local/bin/pinentry; \
+		ln -snf /usr/bin/pinentry $(HOME)/bin/pinentry; \
 	fi;
 	mkdir -p $(HOME)/Pictures;
 	ln -snf $(CURDIR)/central-park.jpg $(HOME)/Pictures/central-park.jpg;
