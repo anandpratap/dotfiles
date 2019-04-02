@@ -478,3 +478,17 @@ xrandrNYC() {
 		--output DP-1-2 --mode 3840x2160 --rate 60  --pos 0x900  \
 		--output DP-2-2 --mode 3840x2160 --rate 60  --rotate left --pos 3840x0
 	}
+
+tunnel(){
+	if [[ -z "$1" ]]; then
+		echo 'tunnel host port'
+		return 1
+	fi
+
+	if [[ -z "$2" ]]; then
+		echo 'tunnel host port'
+		return 1
+	fi
+
+	ssh -N -L "$2":localhost:"$2" "$1"
+}
