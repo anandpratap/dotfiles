@@ -1,5 +1,0 @@
-- thefuck
-- fkill
-- autojump
-- httpie
-- tldr
