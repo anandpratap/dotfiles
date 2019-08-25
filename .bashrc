@@ -131,13 +131,6 @@ shopt -s histappend
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell
 
-# Enable some Bash 4 features when possible:
-# * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
-# * Recursive globbing, e.g. `echo **/*.txt`
-for option in autocd globstar; do
-	shopt -s "$option" 2> /dev/null
-done
-
 # Add tab completion for SSH hostnames based on ~/.ssh/config
 # ignoring wildcards
 [[ -e "$HOME/.ssh/config" ]] && complete -o "default" \
@@ -146,23 +139,12 @@ done
 	grep -v "[?*]" | cut -d " " -f2 | \
 	tr ' ' '\n')" scp sftp ssh
 
-# source kubectl bash completion
-if hash kubectl 2>/dev/null; then
-	# shellcheck source=/dev/null
-	source <(kubectl completion bash)
-fi
-
-# source travis bash completion
-if [[ -f "${HOME}/.travis/travis.sh" ]]; then
-	# shellcheck source=/dev/null
-	source "${HOME}/.travis/travis.sh"
-fi
-
-for file in ~/.{bash_prompt,aliases,functions,path,dockerfunc,extra,exports,bash_local}; do
+for file in ~/.{bash_prompt,aliases,functions,path,extra,exports,bashrc_local}; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		# shellcheck source=/dev/null
 		source "$file"
 	fi
 done
+export PATH=$HOME/local/bin:$PATH
 unset file
 

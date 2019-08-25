@@ -21,7 +21,6 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
 # Shortcuts
@@ -90,23 +89,10 @@ command -v sha1sum > /dev/null || alias sha1sum="shasum"
 # Trim new lines and copy to clipboard
 alias c="tr -d '\\n' | xclip -selection clipboard"
 
-# URL-encode strings
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
-
-# Merge PDF files
-# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
-alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
-
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
-
-# One of @janmoesen’s ProTip™s
-for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-	# shellcheck disable=SC2139,SC2140
-	alias "$method"="lwp-request -m \"$method\""
-done
 
 # Kill all the tabs in Chrome to free up memory
 # [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
@@ -114,9 +100,6 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 
 # Lock the screen (when going AFK)
 alias afk="i3lock -c 000000"
-
-# vhosts
-alias hosts='sudo vim /etc/hosts'
 
 # copy working directory
 alias cwd='pwd | tr -d "\r\n" | xclip -selection clipboard'
@@ -126,6 +109,9 @@ alias cp='cp -i'
 
 # move file interactive
 alias mv='mv -i'
+
+# move file interactive
+alias rm='rm -i'
 
 # untar
 alias untar='tar xvf'
@@ -141,6 +127,3 @@ alias ditch='find "./" -type f -name "*.pyc" -delete;find "./" -type f -name "*~
 
 # ipython pylab
 alias ipy="ipython --pylab"
-
-# save remove
-alias rm="rm -i"
