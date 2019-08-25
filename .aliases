@@ -1,18 +1,16 @@
 #!/bin/bash
+case "$(uname -s)" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN"
+esac
 
-# Check for various OS openers. Quit as soon as we find one that works.
-for opener in browser-exec xdg-open cmd.exe cygstart "start" open; do
-	if command -v $opener >/dev/null 2>&1; then
-		if [[ "$opener" == "cmd.exe" ]]; then
-			# shellcheck disable=SC2139
-			alias open="$opener /c start";
-		else
-			# shellcheck disable=SC2139
-			alias open="$opener";
-		fi
-		break;
-	fi
-done
+# set open to xdg-open for linux
+if [[ "$machine" == "Linux" ]]; then
+    alias open=xdg-open
+fi
 
 # Linux specific aliases
 alias pbcopy='xclip -selection clipboard'
