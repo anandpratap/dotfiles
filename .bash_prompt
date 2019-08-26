@@ -120,8 +120,8 @@ xterm*|rxvt*|eterm*|screen*)
 	PS1="\\[\\033]0;\\w\\007\\]";
 	PS1+="\\[${bold}\\]\\n"; # newline
     if [[ "${USER}" == "anandps" ]]; then
-        PS1+=""
-    else
+        PS1+="\\[${hostStyle}\\]${cloud}\\h "; # host
+	else
         PS1+="\\[${userStyle}\\]\\u"; # username
 	    PS1+="\\[${white}\\] at ";
 	    PS1+="\\[${hostStyle}\\]${cloud}\\h"; # host
