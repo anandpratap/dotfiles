@@ -11,7 +11,7 @@ My ~.emacs~ file. Most of the configurations are borrowed from:
 * Credentials
 Load credentials used for gcal and slack.
 #+BEGIN_SRC emacs-lisp
-(load-library "~/logins.el.gpg")
+(load-library "~/.logins.el.gpg")
 #+END_SRC
 * Packages
 Initialize and install packages using melpa.
@@ -321,12 +321,15 @@ Initialize and install packages using melpa.
   ;; show clock
   (display-time-mode 1)
 
+  (use-package auto-complete)
   (require 'auto-complete)
   (global-auto-complete-mode t)
 
   (setq-default show-trailing-whitespace t)
 
+
   (setq custom-safe-themes t)
+  (use-package molokai-theme)
   (load-theme 'molokai)
 
   (ido-mode t)
@@ -401,7 +404,8 @@ Initialize and install packages using melpa.
 #+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
-  (elpy-enable)
+(use-package elpy)  
+(elpy-enable)
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t)                 ; optional
   (add-hook 'python-mode-hook
@@ -421,7 +425,8 @@ Initialize and install packages using melpa.
 #+END_SRC
 * Org-mode
 #+BEGIN_SRC emacs-lisp
-    (setq org-log-done t
+(use-package org)
+(setq org-log-done t
           org-todo-keywords '((sequence "TODO" "INPROGRESS" "HOLD" "CANCELED" "DONE"))
           org-todo-keyword-faces '(("INPROGRESS" . (:foreground "blue" :weight bold))))
     (add-hook 'org-mode-hook
@@ -776,7 +781,8 @@ Initialize and install packages using melpa.
 
 * Fonts
 #+BEGIN_SRC emacs-lisp
-  (setq aps/default-font "Inconsolata")
+
+(setq aps/default-font "Inconsolata")
   (setq aps/default-font-size 14)
   (setq aps/current-font-size aps/default-font-size)
 
