@@ -781,8 +781,8 @@ Initialize and install packages using melpa.
 * Fonts
 #+BEGIN_SRC emacs-lisp
 
-(setq aps/default-font "Inconsolata")
-  (setq aps/default-font-size 14)
+(setq aps/default-font "Hack")
+  (setq aps/default-font-size 10)
   (setq aps/current-font-size aps/default-font-size)
 
   (setq aps/font-change-increment 1.1)
