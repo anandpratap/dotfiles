@@ -26,5 +26,6 @@ dotfiles: ## Installs the dotfiles.
 	ln -snf $(CURDIR)/emacs.service $(HOME)/.config/systemd/user/emacs.service
 	mkdir -p $(HOME)/.emacs.d/vendor
 	wget https://raw.githubusercontent.com/hayamiz/twittering-mode/master/twittering-mode.el -O $(HOME)/.emacs.d/vendor/twittering-mode.el
+	wget https://raw.githubusercontent.com/hniksic/emacs-htmlize/master/htmlize.el -O $(HOME)/.emacs.d/vendor/htmlize.el
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
