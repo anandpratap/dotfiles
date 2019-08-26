@@ -21,6 +21,7 @@ dotfiles: ## Installs the dotfiles.
 
 	ln -snf $(CURDIR)/.emacs.org $(HOME)/.emacs.org
 	ln -snf $(CURDIR)/.emacs $(HOME)/.emacs
+	ln -snf $(CURDIR)/.logins.el.gpg $(HOME)/.logins.el.gpg
 	mkdir -p $(HOME)/.emacs.d/vendor
 	wget https://raw.githubusercontent.com/hayamiz/twittering-mode/master/twittering-mode.el -O $(HOME)/.emacs.d/vendor/twittering-mode.el
 help:
