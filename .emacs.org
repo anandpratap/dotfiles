@@ -33,6 +33,7 @@ Initialize and install packages using melpa.
   (use-package auto-compile
     :config (auto-compile-on-load-mode))
   (setq load-prefer-newer t)
+(use-package speed-type)
 #+END_SRC
 * Sensible defaults
 #+BEGIN_SRC emacs-lisp
@@ -386,28 +387,31 @@ Initialize and install packages using melpa.
 #+END_SRC
 * Misc-modes
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
+    (add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
 
-  (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
+    (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
 
 
-  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-  (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+    (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+    (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
-  (add-to-list 'auto-mode-alist '("\\.scm$" . racket-mode))
+    (add-to-list 'auto-mode-alist '("\\.scm$" . racket-mode))
 
-  (add-to-list 'auto-mode-alist '("\\.h$" . cpp-mode))
+    (add-to-list 'auto-mode-alist '("\\.h$" . cpp-mode))
 
-  (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-  (add-to-list 'auto-mode-alist '("\\.mdown$" . markdown-mode))
-  (use-package writegood-mode)
-  (add-hook 'markdown-mode-hook
-            (lambda ()
-              (visual-line-mode t)
-              (writegood-mode t)
-              (flyspell-mode t)))
-  (setq markdown-command "pandoc --smart -f markdown -t html")
-  (setq markdown-css-paths `(,(expand-file-name "markdown.css" anandps/vendor-dir)))
+    (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.mdown$" . markdown-mode))
+    (use-package writegood-mode)
+    (add-hook 'markdown-mode-hook
+              (lambda ()
+                (visual-line-mode t)
+                (writegood-mode t)
+                (flyspell-mode t)))
+    (setq markdown-command "pandoc --smart -f markdown -t html")
+    (setq markdown-css-paths `(,(expand-file-name "markdown.css" anandps/vendor-dir)))
+    (use-package racket-mode)
+    (add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
+  (add-to-list 'ac-modes 'racket-mode)
 #+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
