@@ -11,12 +11,23 @@ My ~.emacs~ file. Most of the configurations are borrowed from:
 * Credentials
 Load credentials used for gcal and slack.
 #+BEGIN_SRC emacs-lisp
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (load-library "~/.logins.el.gpg")
 #+END_SRC
 * Packages
 Initialize and install packages using melpa.
 #+BEGIN_SRC emacs-lisp
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (progn
+    (message "Microsoft Windows")))
+ ((string-equal system-type "darwin") ; Mac OS X
+  (progn
+    (message "Mac OS X")))
+    ((string-equal system-type "gnu/linux") ; linux
+  (progn
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+  (message "Linux"))))
+
   (require 'package)
   (unless (assoc-default "melpa" package-archives)
     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
