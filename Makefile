@@ -1,3 +1,4 @@
+
 .PHONY: all
 
 all: dotfiles ## Install dotfiles
