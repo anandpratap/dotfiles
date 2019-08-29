@@ -387,6 +387,8 @@ Initialize and install packages using melpa.
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
+  (mapc 'global-unset-key '([left] [right] [up] [down]))
+
   (global-set-key (kbd "RET") 'newline-and-indent)
   (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
   (global-set-key (kbd "C-+") 'text-scale-increase)
