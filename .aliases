@@ -129,7 +129,7 @@ alias ditch='find "./" -type f -name "*.pyc" -delete;find "./" -type f -name "*~
 alias ipy="ipython --pylab"
 
 # emacs
-alias estart="/usr/bin/emacs --daemon"
-alias estop="/usr/bin/emacsclient --eval \"(progn (setq kill-emacs-hook 'nil) (kill-emacs))\""
+alias estart="emacs --daemon"
+alias estop="emacsclient --eval \"(progn (setq kill-emacs-hook 'nil) (kill-emacs))\""
 alias emx="emacsclient --create-frame"
 alias emxn="emacsclient -t"
