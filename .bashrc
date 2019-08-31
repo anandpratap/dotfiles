@@ -95,8 +95,8 @@ if ! shopt -oq posix; then
 	fi
 fi
 if [[ -d /etc/profile.d/ ]]; then
-	for file in /etc/profile.d/* ; do
-		# shellcheck source=/dev/null
+	for file in /etc/profile.d/*.sh ; do
+		# bbbshellcheck source=/dev/null
 		source "$file"
 	done
 fi

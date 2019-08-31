@@ -1,3 +1,5 @@
 #!/bin/sh
 
-export PATH=${PATH}:${HOME}/local/bin
+export PATH=${HOME}/local/bin:${PATH}
+# emacs latest version
+export PATH=${HOME}/local/emacs_26_3/bin:${PATH}
