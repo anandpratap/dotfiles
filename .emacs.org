@@ -387,7 +387,7 @@ Initialize and install packages using melpa.
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
-  (mapc 'global-unset-key '([left] [right] [up] [down]))
+ ;; (mapc 'global-unset-key '([left] [right] [up] [down]))
 
   (global-set-key (kbd "RET") 'newline-and-indent)
   (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
@@ -919,4 +919,8 @@ Getting slack token: It's easyish! Open and sign into the slack customization pa
 #+BEGIN_SRC emacs-lisp
   (require 'twittering-mode)
   (setq twittering-use-master-password t)
+#+END_SRC
+* Pocket
+#+BEGIN_SRC emacs-lisp
+(require 'pocket-mode)
 #+END_SRC
