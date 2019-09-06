@@ -247,17 +247,8 @@ gitsetoriginnopush() {
 }
 
 tunnel(){
-	if [[ -z "$1" ]]; then
-		echo 'tunnel host port'
-		return 1
-	fi
-
-	if [[ -z "$2" ]]; then
-		echo 'tunnel host port'
-		return 1
-	fi
-
-	ssh -N -L "$2":localhost:"$2" "$1"
+    # https://github.com/mmatczuk/go-http-tunnel
+    $HOME/go/bin/tunnel -config ~/.tunnel/tunnel.yml start-all
 }
 
 
