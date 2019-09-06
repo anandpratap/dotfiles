@@ -245,10 +245,15 @@ restart_gpgagent(){
 gitsetoriginnopush() {
 	git remote set-url --push origin no_push
 }
-
+alias gotunnel="$HOME/go/bin/tunnel -config ~/.tunnel/tunnel.yml start-all"
 tunnel(){
     # https://github.com/mmatczuk/go-http-tunnel
-    $HOME/go/bin/tunnel -config ~/.tunnel/tunnel.yml start-all
+
+    until gotunnel; do
+    echo "Server 'gotunnel' crashed with exit code $?.  Respawning.." >&2
+    sleep 1
+done
+    
 }
 
 
