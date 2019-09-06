@@ -295,99 +295,100 @@ Initialize and install packages using melpa.
 
 * Config
 #+BEGIN_SRC emacs-lisp
-  ;; don't show splash screen, scratch message
-  ;; and set mode to org-mode
-  (setq inhibit-splash-screen t
-        initial-scratch-message nil
-        initial-major-mode 'org-mode)
+    ;; don't show splash screen, scratch message
+    ;; and set mode to org-mode
+    (setq inhibit-splash-screen t
+          initial-scratch-message nil
+          initial-major-mode 'org-mode)
 
-  (setq x-select-enable-clipboard t)
+    (setq x-select-enable-clipboard t)
 
-  (setq-default indicate-empty-lines t)
-  (when (not indicate-empty-lines)
-    (toggle-indicate-empty-lines))
+    (setq-default indicate-empty-lines t)
+    (when (not indicate-empty-lines)
+      (toggle-indicate-empty-lines))
 
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  ;; save temporary files in backup directory
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+    (defalias 'yes-or-no-p 'y-or-n-p)
+    ;; save temporary files in backup directory
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 
-  (setq delete-old-versions -1)
-  (setq version-control t)
-  (setq vc-make-backup-files t)
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+    (setq delete-old-versions -1)
+    (setq version-control t)
+    (setq vc-make-backup-files t)
+    (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-  (setq savehist-file "~/.emacs.d/savehist")
-  (savehist-mode 1)
-  (setq history-length t)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history 1)
-  (setq savehist-additional-variables
-        '(kill-ring
-          search-ring
-          regexp-search-ring))
+    (setq savehist-file "~/.emacs.d/savehist")
+    (savehist-mode 1)
+    (setq history-length t)
+    (setq history-delete-duplicates t)
+    (setq savehist-save-minibuffer-history 1)
+    (setq savehist-additional-variables
+          '(kill-ring
+            search-ring
+            regexp-search-ring))
 
-  ;; disable tool bar, scroll bar and menu bar
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (menu-bar-mode -1)
+    ;; disable tool bar, scroll bar and menu bar
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (menu-bar-mode -1)
 
-  ;; show clock
-  (display-time-mode 1)
+    ;; show clock
+    (display-time-mode 1)
 
-  (use-package auto-complete)
-  (require 'auto-complete)
-  (global-auto-complete-mode t)
+    (use-package auto-complete)
+    (require 'auto-complete)
+    (global-auto-complete-mode t)
 
-  (setq-default show-trailing-whitespace t)
-
-
-  (setq custom-safe-themes t)
-  (use-package molokai-theme)
-  (load-theme 'molokai)
-
-  (ido-mode t)
-  (setq ido-enable-flex-matching t
-        ido-use-virtual-buffers t)
+    (setq-default show-trailing-whitespace t)
 
 
-  (setq indent-line-function 'insert-tab)
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode nil)
+    (setq custom-safe-themes t)
+    (use-package molokai-theme)
+    (load-theme 'molokai)
 
-  ;; c++ no indent for namespace
-  (defconst my-cc-style
-    '("cc-mode"
-      (c-offsets-alist . ((innamespace . [0])))))
-  (c-add-style "my-cc-mode" my-cc-style)
-  (c-set-offset 'innamespace 0)
+    (ido-mode t)
+    (setq ido-enable-flex-matching t
+          ido-use-virtual-buffers t)
 
-  ;; google c-style compatible config
-  (add-hook 'c-mode-common-hook 'google-set-c-style)
-  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
-  (setq scroll-conservatively 100)
-  ;;(global-hl-line-mode)
-  (use-package diff-hl
-  :config
-  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
-  (use-package company)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (global-set-key (kbd "M-/") 'company-complete-common)
+    (setq indent-line-function 'insert-tab)
+    (setq-default c-basic-offset 4
+                  tab-width 4
+                  indent-tabs-mode nil)
 
-  (use-package multi-term)
-  (global-set-key (kbd "C-c t") 'multi-term)
-  (use-package oauth2)
-  (require 'oauth2)
-  (use-package helm)
-  (require 'helm)
+    ;; c++ no indent for namespace
+    (defconst my-cc-style
+      '("cc-mode"
+        (c-offsets-alist . ((innamespace . [0])))))
+    (c-add-style "my-cc-mode" my-cc-style)
+    (c-set-offset 'innamespace 0)
+
+    ;; google c-style compatible config
+    (add-hook 'c-mode-common-hook 'google-set-c-style)
+    (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+
+    (setq scroll-conservatively 100)
+    ;;(global-hl-line-mode)
+    (use-package diff-hl
+    :config
+    (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+    (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+    (use-package company)
+    (add-hook 'after-init-hook 'global-company-mode)
+    (global-set-key (kbd "M-/") 'company-complete-common)
+
+    (use-package multi-term)
+    (global-set-key (kbd "C-c t") 'multi-term)
+    (use-package oauth2)
+    (require 'oauth2)
+    (use-package helm)
+    (require 'helm)
+  (global-auto-revert-mode t)
 
 #+END_SRC
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
-  (mapc 'global-unset-key '([left] [right] [up] [down]))
+ ;; (mapc 'global-unset-key '([left] [right] [up] [down]))
 
   (global-set-key (kbd "RET") 'newline-and-indent)
   (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
@@ -919,4 +920,8 @@ Getting slack token: It's easyish! Open and sign into the slack customization pa
 #+BEGIN_SRC emacs-lisp
   (require 'twittering-mode)
   (setq twittering-use-master-password t)
+#+END_SRC
+* Pocket
+#+BEGIN_SRC emacs-lisp
+(require 'pocket-mode)
 #+END_SRC

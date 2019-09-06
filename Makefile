@@ -28,6 +28,8 @@ dotfiles: ## Installs the dotfiles.
 	wget https://raw.githubusercontent.com/hayamiz/twittering-mode/master/twittering-mode.el -O $(HOME)/.emacs.d/vendor/twittering-mode.el
 	wget https://raw.githubusercontent.com/hniksic/emacs-htmlize/master/htmlize.el -O $(HOME)/.emacs.d/vendor/htmlize.el
 	wget http://elpa.gnu.org/packages/oauth2-0.11.el -O $(HOME)/.emacs.d/vendor/oauth2.el
-
+	wget https://raw.githubusercontent.com/lujun9972/pocket-api.el/master/pocket-api.el -O $(HOME)/.emacs.d/vendor/pocket-api.el
+	wget https://raw.githubusercontent.com/lujun9972/pocket-mode/229de7d35b7e5605797591c46aa8200d7efc363c/pocket-mode.el -O $(HOME)/.emacs.d/vendor/pocket-mode.el
+	gpg -d $(CURDIR)/.pocket-api-auth.json.gpg > $(HOME)/.pocket-api-auth.json
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
