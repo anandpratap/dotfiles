@@ -923,5 +923,72 @@ Getting slack token: It's easyish! Open and sign into the slack customization pa
 #+END_SRC
 * Pocket
 #+BEGIN_SRC emacs-lisp
-(require 'pocket-mode)
+;;(require 'pocket-mode)
+#+END_SRC
+* Blogging
+This setup is borrowed from [[https://explog.in/][Kunal Bhalla's]] blog.
+#+BEGIN_SRC emacs-lisp
+    (require 'ob-css)
+    (require 'ox-publish)
+
+    (defun create-postamble (options)
+      (let ((input-file (plist-get options :input-file)))
+    ))
+    (defun plist-keys-helper (plist keyp counter)
+      (if (and (> counter 0) (not (null plist)))
+          (let ((rest (plist-keys-helper (cdr plist) (not keyp) (- counter 1))))
+            (if keyp
+                (cons (car plist) rest)
+              rest))
+        '()))
+
+    (defun plist-keys (plist)
+      (plist-keys-helper plist 't 10))
+
+    (defun create-preamble (options)
+      (if (not (string-suffix-p "org/index.org" (plist-get options :input-file)))
+          (concat
+           "<div id='#preamble'><a href='index.html'>/var/log/anandps</a></div>")))
+
+    (defun create-project-configuration (title base-dir publishing-dir)
+      `((,title
+         :base-directory ,base-dir
+         :publishing-directory ,publishing-dir
+         :base-extension "org"
+         :recursive t
+         :section-numbers nil
+         :publishing-function org-html-publish-to-html
+         :with-author nil
+         :with-toc nil
+         :html-head-include-scripts nil
+         :html-head-include-default-style nil
+         :html-head-extra "
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <link href='https://fonts.googleapis.com/css?family=Karla|Spectral&display=swap' rel='stylesheet'>
+    <link href='static/style.css'  rel='stylesheet' type='text/css'>
+                "
+         :html-validation-link nil
+         :html-footnotes-section "<div class=\"footnotes\" title=\"%s\">%s</div>"
+         :html-preamble ,'create-preamble
+         :html-postamble ,'create-postamble)))
+
+    (setq
+     org-publish-project-alist
+     `(,@(create-project-configuration
+          "musings-notes"
+          "~/Dropbox/org/blog/org"
+          "~/Dropbox/org/blog/public")
+       ("musings-static"
+        :base-directory "~/Dropbox/org/blog/org/static/"
+        :publishing-directory "~/Dropbox/org/blog/public/static/"
+        :base-extension any
+        :recursive t
+        :publishing-function org-publish-attachment)
+       ("musings"
+        :components ("musings-notes"
+                     "musings-static"
+                     ))))
+
+    (org-publish "musings" t)
+    ; (org-babel-execute-buffer)
 #+END_SRC
