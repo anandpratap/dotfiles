@@ -948,7 +948,7 @@ This setup is borrowed from [[https://explog.in/][Kunal Bhalla's]] blog.
     (defun create-preamble (options)
       (if (not (string-suffix-p "org/index.org" (plist-get options :input-file)))
           (concat
-           "<div id='#preamble'><a href='index.html'>/var/log/anandps</a></div>")))
+           "<div id='#preamble'><a href='index.html'>Home</a></div>")))
 
     (defun create-project-configuration (title base-dir publishing-dir)
       `((,title
