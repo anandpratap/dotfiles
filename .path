@@ -1,5 +1,6 @@
 #!/bin/sh
 
 export PATH=${HOME}/local/bin:${PATH}
+export PATH=${HOME}/local/dotfiles/bin:${PATH}
 # emacs latest version
 export PATH=${HOME}/local/emacs_26_3/bin:${PATH}
