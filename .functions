@@ -260,3 +260,14 @@ done
 setup_terminal(){
 	gnome-terminal --geometry=260x25-0+0 --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'"
 }
+
+function togglehost() {
+    if [ -e /etc/host.bak ]
+    then
+        sudo mv /etc/host.bak /etc/hosts
+        echo "Hosts file is active again"
+    else
+        sudo mv /etc/hosts /etc/host.bak
+        echo "Hosts file is set aside"
+    fi
+}
