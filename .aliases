@@ -135,4 +135,4 @@ alias emx="emacsclient --create-frame"
 alias emxn="emacsclient -t"
 
 # https://gist.github.com/igrigorik/6666860
-alias gh="open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n1"
+# alias gh="open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n1"

@@ -1,6 +1,17 @@
-.PHONY: all
+PHONY: all
 
-all: dotfiles ## Install dotfiles
+all: extra dotfiles ## Install dotfiles
+
+extra:
+	gpg --list-keys || true;
+	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
+	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
+	ln -snf $(CURDIR)/.emacs.org $(HOME)/.emacs.org
+	ln -snf $(CURDIR)/.emacs $(HOME)/.emacs
+
+	mkdir -p $(HOME)/.config/systemd/user
+	ln -snf $(CURDIR)/emacs.service $(HOME)/.config/systemd/user/emacs.service
+	mkdir -p $(HOME)/.emacs.d/vendor
 
 dotfiles: ## Installs the dotfiles.
 	# add aliases for dotfiles
@@ -8,9 +19,6 @@ dotfiles: ## Installs the dotfiles.
 		f=$$(basename $$file); \
 		ln -sfn $$file $(HOME)/$$f; \
 	done; \
-	gpg --list-keys || true;
-	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
-	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 	ln -sfn $(CURDIR)/gitignore $(HOME)/.gitignore;
 	git update-index --skip-worktree $(CURDIR)/.gitconfig;
 	mkdir -p $(HOME)/.config;
@@ -18,18 +26,5 @@ dotfiles: ## Installs the dotfiles.
 	ln -snf $(CURDIR)/.fonts $(HOME)/.local/share/fonts;
 	ln -snf $(CURDIR)/.bash_profile $(HOME)/.profile;
 	touch $(HOME)/.bashrc_local;
-
-	ln -snf $(CURDIR)/.emacs.org $(HOME)/.emacs.org
-	ln -snf $(CURDIR)/.emacs $(HOME)/.emacs
-	ln -snf $(CURDIR)/.logins.el.gpg $(HOME)/.logins.el.gpg
-	mkdir -p $(HOME)/.config/systemd/user
-	ln -snf $(CURDIR)/emacs.service $(HOME)/.config/systemd/user/emacs.service
-	mkdir -p $(HOME)/.emacs.d/vendor
-	wget https://raw.githubusercontent.com/hayamiz/twittering-mode/master/twittering-mode.el -O $(HOME)/.emacs.d/vendor/twittering-mode.el
-	wget https://raw.githubusercontent.com/hniksic/emacs-htmlize/master/htmlize.el -O $(HOME)/.emacs.d/vendor/htmlize.el
-	wget http://elpa.gnu.org/packages/oauth2-0.11.el -O $(HOME)/.emacs.d/vendor/oauth2.el
-	wget https://raw.githubusercontent.com/lujun9972/pocket-api.el/master/pocket-api.el -O $(HOME)/.emacs.d/vendor/pocket-api.el
-	wget https://raw.githubusercontent.com/lujun9972/pocket-mode/229de7d35b7e5605797591c46aa8200d7efc363c/pocket-mode.el -O $(HOME)/.emacs.d/vendor/pocket-mode.el
-	gpg -d $(CURDIR)/.pocket-api-auth.json.gpg > $(HOME)/.pocket-api-auth.json
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
