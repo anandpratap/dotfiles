@@ -8,11 +8,6 @@ My ~.emacs~ file. Most of the configurations are borrowed from:
 - [[https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org][Harry Schwartz's Emacs configuration]]
 - [[http://doc.norang.ca/org-mode.html][Org Mode - Organize Your Life In Plain Text!]]
 
-* Credentials
-Load credentials used for gcal and slack.
-#+BEGIN_SRC emacs-lisp
-(load-library "~/.logins.el.gpg")
-#+END_SRC
 * Packages
 Initialize and install packages using melpa.
 #+BEGIN_SRC emacs-lisp
@@ -462,7 +457,7 @@ Initialize and install packages using melpa.
       (setq org-agenda-show-log t
             org-agenda-todo-ignore-scheduled t
             org-agenda-todo-ignore-deadlines t)
-      (setq org-agenda-files (list "~/Dropbox/org/backlogs.org" "~/Dropbox/org/notes.org" "~/Dropbox/org/reviews.org"))
+      (setq org-agenda-files (list "~/Dropbox/notes/backlogs.org" "~/Dropbox/notes/work.org" "~/Dropbox/notes/life.org"))
 
       (require 'org)
       (require 'org-install)
@@ -509,7 +504,8 @@ Initialize and install packages using melpa.
                 'append)
 
       (add-hook 'org-mode-hook (lambda () (abbrev-mode 1)))
-
+      (setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "WAITING" "CANCELED" "DONE")))
 
       ;; Custom Key Bindings
       (global-set-key (kbd "<f12>") 'org-agenda)
@@ -574,47 +570,21 @@ Initialize and install packages using melpa.
           (defun bh/switch-to-scratch ()
             (interactive)
             (switch-to-buffer "*scratch*"))
-        (setq org-todo-keywords
-              (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                      (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
 
-        (setq org-todo-keyword-faces
-              (quote (("TODO" :foreground "red" :weight bold)
-                      ("NEXT" :foreground "blue" :weight bold)
-                      ("DONE" :foreground "forest green" :weight bold)
-                      ("WAITING" :foreground "orange" :weight bold)
-                      ("HOLD" :foreground "magenta" :weight bold)
-                      ("CANCELLED" :foreground "forest green" :weight bold))))
-
-        (setq org-todo-state-tags-triggers
-              (quote (("CANCELLED" ("CANCELLED" . t))
-                      ("WAITING" ("WAITING" . t))
-                      ("HOLD" ("WAITING") ("HOLD" . t))
-                      (done ("WAITING") ("HOLD"))
-                      ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-                      ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-                      ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
-
-        (setq org-directory "~/Dropbox/org")
-        (setq org-default-notes-file "~/Dropbox/org/backlogs.org")
+        (setq org-directory "~/Dropbox/notes")
+        (setq org-default-notes-file "~/Dropbox/notes/backlogs.org")
 
         ;; I use C-c c to start capture mode
         (global-set-key (kbd "C-c c") 'org-capture)
 
         ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
         (setq org-capture-templates
-              (quote (("t" "todo" entry (file "~/Dropbox/org/backlogs.org")
+              (quote (("t" "todo" entry (file "~/Dropbox/notes/backlogs.org")
                        "* TODO %i%?")
-                      ("n" "Notes" entry (file "~/Dropbox/org/backlogs.org")
+                      ("n" "Notes" entry (file "~/Dropbox/notes/backlogs.org")
                        "* NOTE %?\n%U" :empty-lines 1)
-                      ("N" "Note with Clipboard" entry (file "~/Dropbox/org/backlogs.org")
-                       "* NOTE %?\n%U\n   %c" :empty-lines 1)
-                      ("w" "Review: Weekly Review" entry (file+datetree "~/Dropbox/org/reviews.org")
-                       (file "~/Dropbox/org/templates/weekly.org"))
-                      ("m" "Review: Monthly Review" entry (file+datetree "~/Dropbox/org/reviews.org")
-                       (file "~/Dropbox/org/templates/monthly.org"))
-                      ("d" "Review: Daily Review" entry (file+datetree "~/Dropbox/org/reviews.org")
-                       (file "~/Dropbox/org/templates/daily.org")))))
+                      ("N" "Note with Clipboard" entry (file "~/Dropbox/notes/backlogs.org")
+                       "* NOTE %?\n%U\n   %c" :empty-lines 1))))
 
         ;; Remove empty LOGBOOK drawers on clock out
         (defun bh/remove-empty-drawer-on-clock-out ()
@@ -663,89 +633,6 @@ Initialize and install packages using melpa.
         ;; Compact the block agenda view
         (setq org-agenda-compact-blocks t)
 
-        ;; Custom agenda command definitions
-        (setq org-agenda-custom-commands
-              (quote (("N" "Notes" tags "NOTE"
-                       ((org-agenda-overriding-header "Notes")
-                        (org-tags-match-list-sublevels t)))
-                      ("h" "Habits" tags-todo "STYLE=\"habit\""
-                       ((org-agenda-overriding-header "Habits")
-                        (org-agenda-sorting-strategy
-                         '(todo-state-down effort-up category-keep))))
-                      (" " "Agenda"
-                       ((agenda "" nil)
-                        (tags "REFILE"
-                              ((org-agenda-overriding-header "Tasks to Refile")
-                               (org-tags-match-list-sublevels nil)))
-                        (tags-todo "-CANCELLED/!"
-                                   ((org-agenda-overriding-header "Stuck Projects")
-                                    (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                                    (org-agenda-sorting-strategy
-                                     '(category-keep))))
-                        (tags-todo "-HOLD-CANCELLED/!"
-                                   ((org-agenda-overriding-header "Projects")
-                                    (org-agenda-skip-function 'bh/skip-non-projects)
-                                    (org-tags-match-list-sublevels 'indented)
-                                    (org-agenda-sorting-strategy
-                                     '(category-keep))))
-                        (tags-todo "-CANCELLED/!NEXT"
-                                   ((org-agenda-overriding-header (concat "Project Next Tasks"
-                                                                          (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                              ""
-                                                                            " (including WAITING and SCHEDULED tasks)")))
-                                    (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
-                                    (org-tags-match-list-sublevels t)
-                                    (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-sorting-strategy
-                                     '(todo-state-down effort-up category-keep))))
-                        (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                                   ((org-agenda-overriding-header (concat "Project Subtasks"
-                                                                          (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                              ""
-                                                                            " (including WAITING and SCHEDULED tasks)")))
-                                    (org-agenda-skip-function 'bh/skip-non-project-tasks)
-                                    (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-sorting-strategy
-                                     '(category-keep))))
-                        (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                                   ((org-agenda-overriding-header (concat "Standalone Tasks"
-                                                                          (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                              ""
-                                                                            " (including WAITING and SCHEDULED tasks)")))
-                                    (org-agenda-skip-function 'bh/skip-project-tasks)
-                                    (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-sorting-strategy
-                                     '(category-keep))))
-                        (tags-todo "-CANCELLED+WAITING|HOLD/!"
-                                   ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
-                                                                          (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                              ""
-                                                                            " (including WAITING and SCHEDULED tasks)")))
-                                    (org-agenda-skip-function 'bh/skip-non-tasks)
-                                    (org-tags-match-list-sublevels nil)
-                                    (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                                    (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
-                        (tags "-REFILE/"
-                              ((org-agenda-overriding-header "Tasks to Archive")
-                               (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
-                               (org-tags-match-list-sublevels nil))))
-                       nil))))
-
-                       (use-package org-bullets
-                       :init
-                       (add-hook 'org-mode-hook 'org-bullets-mode))
-                       (setq org-ellipsis "⤵")
-                       (setq org-src-fontify-natively t)
-                       (setq org-src-tab-acts-natively t)
-                       (setq org-src-window-setup 'current-window)
-                       (add-to-list 'org-structure-template-alist
-                       '("el" . "src emacs-lisp"))
 #+END_SRC
 * Utility functions
 #+BEGIN_SRC emacs-lisp
@@ -867,128 +754,7 @@ Initialize and install packages using melpa.
 #+BEGIN_SRC emacs-lisp
 (require 'cl)
 #+END_SRC
-* Slack
-Getting slack token: It's easyish! Open and sign into the slack customization page, e.g. subdomain.slack.com/customize, right click anywhere > inspect element. Open the console and paste:
-=window.prompt("your api token is: ", TS.boot_data.api_token)=
-#+BEGIN_SRC emacs-lisp
-    ;; I'm using use-package and el-get and evil
-      (use-package slack
-        :commands (slack-start)
-        :init
-        (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
-        (setq slack-prefer-current-team t)
-        :config
-        (slack-register-team
-         :name "geminusai"
-         :default t
-         :client-id slack-client-id
-         :client-secret slack-client-secret
-         :token slack-token
-         :subscribed-channels '(rename rrrrr)
-         :full-and-display-names t))
-
-        ;; (evil-define-key 'normal slack-info-mode-map
-      ;;     ",u" 'slack-room-update-messages)
-      ;;   (evil-define-key 'normal slack-mode-map
-      ;;     ",c" 'slack-buffer-kill
-      ;;     ",ra" 'slack-message-add-reaction
-      ;;     ",rr" 'slack-message-remove-reaction
-      ;;     ",rs" 'slack-message-show-reaction-users
-      ;;     ",pl" 'slack-room-pins-list
-      ;;     ",pa" 'slack-message-pins-add
-      ;;     ",pr" 'slack-message-pins-remove
-      ;;     ",mm" 'slack-message-write-another-buffer
-      ;;     ",me" 'slack-message-edit
-      ;;     ",md" 'slack-message-delete
-      ;;     ",u" 'slack-room-update-messages
-      ;;     ",2" 'slack-message-embed-mention
-      ;;     ",3" 'slack-message-embed-channel
-      ;;     "\C-n" 'slack-buffer-goto-next-message
-      ;;     "\C-p" 'slack-buffer-goto-prev-message)
-      ;;    (evil-define-key 'normal slack-edit-message-mode-map
-      ;;     ",k" 'slack-message-cancel-edit
-      ;;     ",s" 'slack-message-send-from-buffer
-      ;;     ",2" 'slack-message-embed-mention
-      ;;     ",3" 'slack-message-embed-channel))
-
-       (use-package alert
-         :commands (alert)
-        :init
-        (setq alert-default-style 'notifier))
-#+END_SRC
-* Twitter
-#+BEGIN_SRC emacs-lisp
-  (require 'twittering-mode)
-  (setq twittering-use-master-password t)
-#+END_SRC
 * Pocket
 #+BEGIN_SRC emacs-lisp
 ;;(require 'pocket-mode)
-#+END_SRC
-* Blogging
-This setup is borrowed from [[https://explog.in/][Kunal Bhalla's]] blog.
-#+BEGIN_SRC emacs-lisp
-    (require 'ob-css)
-    (require 'ox-publish)
-
-    (defun create-postamble (options)
-      (let ((input-file (plist-get options :input-file)))
-    ))
-    (defun plist-keys-helper (plist keyp counter)
-      (if (and (> counter 0) (not (null plist)))
-          (let ((rest (plist-keys-helper (cdr plist) (not keyp) (- counter 1))))
-            (if keyp
-                (cons (car plist) rest)
-              rest))
-        '()))
-
-    (defun plist-keys (plist)
-      (plist-keys-helper plist 't 10))
-
-    (defun create-preamble (options)
-      (if (not (string-suffix-p "org/index.org" (plist-get options :input-file)))
-          (concat
-           "<div id='#preamble'><a href='index.html'>Home</a></div>")))
-
-    (defun create-project-configuration (title base-dir publishing-dir)
-      `((,title
-         :base-directory ,base-dir
-         :publishing-directory ,publishing-dir
-         :base-extension "org"
-         :recursive t
-         :section-numbers nil
-         :publishing-function org-html-publish-to-html
-         :with-author nil
-         :with-toc nil
-         :html-head-include-scripts nil
-         :html-head-include-default-style nil
-         :html-head-extra "
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <link href='https://fonts.googleapis.com/css?family=Karla|Spectral&display=swap' rel='stylesheet'>
-    <link href='static/style.css'  rel='stylesheet' type='text/css'>
-                "
-         :html-validation-link nil
-         :html-footnotes-section "<div class=\"footnotes\" title=\"%s\">%s</div>"
-         :html-preamble ,'create-preamble
-         :html-postamble ,'create-postamble)))
-
-    (setq
-     org-publish-project-alist
-     `(,@(create-project-configuration
-          "musings-notes"
-          "~/Dropbox/org/blog/org"
-          "~/Dropbox/org/blog/public")
-       ("musings-static"
-        :base-directory "~/Dropbox/org/blog/org/static/"
-        :publishing-directory "~/Dropbox/org/blog/public/static/"
-        :base-extension any
-        :recursive t
-        :publishing-function org-publish-attachment)
-       ("musings"
-        :components ("musings-notes"
-                     "musings-static"
-                     ))))
-
-    (org-publish "musings" t)
-    ; (org-babel-execute-buffer)
 #+END_SRC
