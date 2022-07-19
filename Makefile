@@ -3,9 +3,6 @@ PHONY: all
 all: extra dotfiles ## Install dotfiles
 
 extra:
-	gpg --list-keys || true;
-	ln -sfn $(CURDIR)/.gnupg/gpg.conf $(HOME)/.gnupg/gpg.conf;
-	ln -sfn $(CURDIR)/.gnupg/gpg-agent.conf $(HOME)/.gnupg/gpg-agent.conf;
 	ln -snf $(CURDIR)/.emacs.org $(HOME)/.emacs.org
 	ln -snf $(CURDIR)/.emacs $(HOME)/.emacs
 
