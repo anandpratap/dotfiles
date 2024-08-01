@@ -1,15 +1,6 @@
 PHONY: all
 
-all: extra dotfiles ## Install dotfiles
-
-extra:
-	ln -snf $(CURDIR)/.emacs.org $(HOME)/.emacs.org
-	ln -snf $(CURDIR)/.emacs $(HOME)/.emacs
-
-	mkdir -p $(HOME)/.config/systemd/user
-	ln -snf $(CURDIR)/emacs.service $(HOME)/.config/systemd/user/emacs.service
-	mkdir -p $(HOME)/.emacs.d/vendor
-
+all: dotfiles ## Install dotfiles
 dotfiles: ## Installs the dotfiles.
 	# add aliases for dotfiles
 	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".travis.yml" -not -name ".git" -not -name ".*.swp" -not -name ".gnupg"); do \

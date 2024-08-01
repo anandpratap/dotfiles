@@ -232,42 +232,10 @@ man() {
 		man "$@"
 }
 
-restart_gpgagent(){
-	# Restart the gpg agent.
-	# shellcheck disable=SC2046
-	kill -9 $(pidof scdaemon) >/dev/null 2>&1
-	# shellcheck disable=SC2046
-	kill -9 $(pidof gpg-agent) >/dev/null 2>&1
-	gpg-connect-agent /bye >/dev/null 2>&1
-	gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
-}
-
 gitsetoriginnopush() {
 	git remote set-url --push origin no_push
 }
-alias gotunnel="$HOME/go/bin/tunnel -config ~/.tunnel/tunnel.yml start-all"
-tunnel(){
-    # https://github.com/mmatczuk/go-http-tunnel
-
-    until gotunnel; do
-    echo "Server 'gotunnel' crashed with exit code $?.  Respawning.." >&2
-    sleep 1
-done
-    
-}
-
 
 setup_terminal(){
 	gnome-terminal --geometry=260x25-0+0 --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'" --tab -e "bash -c 'ssh hercules'"
-}
-
-function togglehost() {
-    if [ -e /etc/host.bak ]
-    then
-        sudo mv /etc/host.bak /etc/hosts
-        echo "Hosts file is active again"
-    else
-        sudo mv /etc/hosts /etc/host.bak
-        echo "Hosts file is set aside"
-    fi
 }
